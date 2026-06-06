@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Galería - Prisma</title>
+        <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    </head>
+    <body id="page-top">
+        <!-- Navbar-->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="#page-top">Galería Prisma</a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#Colecciones">Colecciones</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#Obras">Obras</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#venta">Comprar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="toggleAdmin()">Admin</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- pantalla principal-->
+        <header class="masthead">
+            <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+                <div class="d-flex justify-content-center">
+                    <div class="text-center">
+                        <h1 class="mx-auto my-0 text-uppercase">Prisma</h1>
+                        <h2 class="text-white-50 mx-auto mt-2 mb-5">Arte Clásico</h2>
+                        <a class="btn btn-primary" href="#Colecciones">Ver Colecciones</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Sección colecciones decorativa-->
+        <section class="about-section text-center" id="Colecciones">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-lg-8">
+                        <h2 class="text-white mb-4">Nuestras Colecciones</h2>
+                        <p class="text-white-50">
+                           Un recorrido exclusivo por lienzos icónicos y legados incalculables. Descubra las historias, los trazos y los secretos detrás de las pinturas más célebres de la historia universal.
+                        </p>
+                    </div>
+                </div>
+                <img class="img-fluid" th:src="@{/assets/img/nuevo.jpg}" alt="..." style="max-height: 400px; width: 100%; object-fit: cover;"/>
+            </div>
+        </section>
+<!-- Mostrar todas las obras -->
+       <section class="projects-section bg-light" id="Obras">
+            <div class="container px-4 px-lg-5">
+                <h2 class="text-center mb-5">Obras disponibles</h2>
+                <div th:each="artwork, iterStat : ${artwork}" th:if="${iterStat.index < 3}">
+                    <div class="row gx-0 mb-5 mb-lg-0 justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="bg-black text-center h-100 project">
+                                <div class="d-flex h-100">
+                                    <div class="project-text w-100 my-auto text-center">
+                                        <img 
+                                            th:src="@{/assets/img/{img}(img=${artwork.image})}"
+                                            th:alt="${artwork.name}"
+                                            class="img-fluid mb-3"
+                                            style="max-height:300px; object-fit:cover;"
+                                        >
+                                        <small class="fst-italic text-white-50 mt-1 d-block">Fuente: Wikimedia Commons</small>
+                                        <h4 class="text-white" th:text="${artwork.name}">Nombre</h4>
+                                        <p class="mb-0 text-white-50">Artista: <span th:text="${artwork.artist}"></span></p>
+                                        <p class="mb-0 text-white-50">Tipo: <span th:text="${artwork.type}"></span></p>
+                                        <p class="mb-0 text-white-50">Precio: $<span th:text="${#numbers.formatDecimal(artwork.price, 1, 'COMMA', 0, 'POINT')}"></span></p>
+                                        <p class="mb-0 text-white-50">ID: <span th:text="${artwork.id}"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="masObras" style="display:none">
+                    <div th:each="artwork, iterStat : ${artwork}" th:if="${iterStat.index >= 3}">
+                        <div class="row gx-0 mb-5 mb-lg-0 justify-content-center">
+                            <div class="col-lg-6">
+                                <div class="bg-black text-center h-100 project">
+                                    <div class="d-flex h-100">
+                                        <div class="project-text w-100 my-auto text-center">
+                                            <img 
+                                                th:src="@{/assets/img/{img}(img=${artwork.image})}"
+                                                th:alt="${artwork.name}"
+                                                class="img-fluid mb-3"
+                                                style="max-height:300px; object-fit:cover;"
+                                            >
+                                            <small class="fst-italic text-white-50 mt-1 d-block">Fuente: Wikimedia Commons</small>
+                                            <h4 class="text-white" th:text="${artwork.name}">Nombre</h4>
+                                            <p class="mb-0 text-white-50">Artista: <span th:text="${artwork.artist}"></span></p>
+                                            <p class="mb-0 text-white-50">Tipo: <span th:text="${artwork.type}"></span></p>
+                                            <p class="mb-0 text-white-50">Precio: $<span th:text="${#numbers.formatDecimal(artwork.price, 1, 'COMMA', 0, 'POINT')}"></span></p>
+                                            <p class="mb-0 text-white-50">ID: <span th:text="${artwork.id}"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="text-center mt-3 mb-5">
+                    <button class="btn btn-primary" onclick="toggleObras(this)" th:if="${#lists.size(artwork) > 3}">Ver todas las obras</button>
+                </div>
+                <p th:if="${#lists.isEmpty(artwork)}"class="text-center text-muted">No hay obras registradas aún.</p>
+<!-- Mostrar por filtro -->
+                <div class="text-center mt-5">
+                    <i class="fa-solid fa-magnifying-glass fa-2x mb-2 text-black mt-5"></i>
+                    <h2 class="text-black mb-3">Buscar obra</h2>
+                    <form th:action="@{/buscar}" method="GET">
+                        <div class="mb-3 mt-3">
+                            <input class="form-control" style="max-width: 500px; margin: 0 auto;" type="text" name="filter" placeholder="Buscar por nombre, artista o tipo">
+                            <div class="d-flex justify-content-center gap-2 mt-2">
+                                <input class="form-control" type="number" name="min" placeholder="Min $" min="0" style="max-width: 150px;">
+                                <input class="form-control" type="number" name="max" placeholder="Max $" min="0" style="max-width: 150px;">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Buscar</button>
+                    </form>
+                    <div th:if="${filter != null and #lists.isEmpty(results)}" class="alert alert-danger mt-3">
+                        No se encontraron obras con ese filtro.
+                    </div>
+                    <div th:if="${results != null and !#lists.isEmpty(results)}" class="mt-5">
+                        <h3 class="text-center">Resultados de búsqueda</h3>
+                            <div th:each="artwork : ${results}">
+                                <div class="row gx-0 mb-5 mb-lg-0 justify-content-center">
+                                    <div class="col-lg-6">
+                                        <div class="bg-black text-center h-100 project">
+                                            <div class="d-flex h-100">
+                                                <div class="project-text w-100 my-auto text-center">
+                                                    <img 
+                                                        th:src="@{/assets/img/{img}(img=${artwork.image})}"
+                                                        th:alt="${artwork.name}"
+                                                        class="img-fluid mb-3"
+                                                        style="max-height:300px; object-fit:cover;"
+                                                    >
+                                                    <small class="fst-italic text-white-50 mt-1 d-block">Fuente: Wikimedia Commons</small>
+                                                    <h4 class="text-white" th:text="${artwork.name}">Nombre</h4>
+                                                    <p class="mb-0 text-white-50">Artista: <span th:text="${artwork.artist}"></span></p>
+                                                    <p class="mb-0 text-white-50">Tipo: <span th:text="${artwork.type}"></span></p>
+                                                    <p class="mb-0 text-white-50">Precio: $<span th:text="${#numbers.formatDecimal(artwork.price, 1, 'COMMA', 0, 'POINT')}"></span></p>
+                                                    <p class="mb-0 text-white-50">ID: <span th:text="${artwork.id}"></span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+<!-- Sección de compra -->
+        <section class="signup-section" id="venta">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5">
+                    <div class="col-md-10 col-lg-8 mx-auto text-center">
+                        <i class="fas fa-shopping-cart fa-2x mb-2 text-white"></i>
+                        <h2 class="text-white mb-5">Comprar obras</h2>
+                        <div th:if="${message == 'venta-saved'}" class="alert alert-success mt-3">Compra registrada correctamente</div>
+                        <div th:if="${message != null and #strings.startsWith(message, 'venta-') and message != 'venta-saved'}" 
+                            class="alert alert-danger mt-3" 
+                            th:text="${#strings.replace(message, 'venta-', '')}">
+                        </div>
+
+                        <form th:action="@{/venta/registrar}" method="POST" id="formCompra">
+                            <div class="form-floating mb-3" style="max-width: 500px; margin: 0 auto;">
+                                <input class="form-control" type="text" name="buyer" required placeholder="Ingrese su nombre" id="floatingBuyer">
+                                <label for="floatingBuyer">Ingrese su nombre</label>
+                            </div>
+                            <div class="form-floating mb-3" style="max-width: 500px; margin: 0 auto;">
+                                <input class="form-control" type="email" name="mail" required placeholder="Ingrese su correo" id="floatingMail">
+                                <label for="floatingMail">Ingrese su correo</label>
+                            </div>
+                            <div class="form-floating mb-3" style="max-width: 500px; margin: 0 auto;">
+                                <input class="form-control" type="date" name="date" required id="fechaCompra">
+                                <label for="fechaCompra">Fecha de compra</label>
+                            </div>
+
+                            <!-- Obras disponibles como checkboxes -->
+                            <h5 class="text-white mt-4 mb-3">Selecciona las obras que deseas comprar:</h5>
+                            <div th:each="artwork : ${artwork}">
+                                <div class="form-check text-white text-start mb-2">
+                                    <input class="form-check-input" type="checkbox" 
+                                        name="artworkIds" 
+                                        th:value="${artwork.id}"
+                                        th:id="${'artwork-' + artwork.id}"
+                                        onchange="calcularTotal()">
+                                    <label class="form-check-label" th:for="${'artwork-' + artwork.id}">
+                                        <span th:text="${artwork.name}"></span> — 
+                                        <span th:text="${artwork.artist}"></span> — $
+                                        <span th:text="${#numbers.formatDecimal(artwork.price, 1, 'COMMA', 0, 'POINT')}" 
+                                            th:attr="data-price=${artwork.price}"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Total calculado -->
+                            <div class="mt-4 text-white">
+                                <p>Subtotal: $<span id="subtotal">0</span></p>
+                                <p id="descuentoTexto" style="display:none">Descuento: -$<span id="descuento">0</span></p>
+                                <h4>Total: $<span id="total">0</span></h4>
+                            </div>
+
+                            <button class="btn btn-primary mt-3" type="submit">Confirmar compra</button>
+                        </form>
+                        <div class="mt-5">
+                            <i class="fas fa-search fa-2x mb-2 text-white"></i>
+                            <h2 class="text-white mb-3">Consultar mis compras</h2>
+                            <form th:action="@{/venta/buscar}" method="GET">
+                                <div class="form-floating mb-3" style="max-width: 500px; margin: 0 auto;">
+                                    <input class="form-control" type="email" name="mail" required placeholder="Ingrese su correo electrónico" id="floatingLoginMail">
+                                    <label for="floatingLoginMail">Correo electrónico</label>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Buscar mis compras</button>
+                            </form>
+                            <div th:if="${salesByMail != null and !#lists.isEmpty(salesByMail)}" class="mt-4">
+                                <div th:each="sale : ${salesByMail}" class="mb-4">
+                                    <h5 class="text-white">Compra #<span th:text="${sale.id}"></span> — <span th:text="${sale.date}"></span></h5>
+                                    <table class="table table-dark table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Obra</th>
+                                                <th>Artista</th>
+                                                <th>Precio unitario</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="detail : ${detailsByMail}" th:if="${detail.sale.id == sale.id}">
+                                                <td th:text="${detail.artwork.name}"></td>
+                                                <td th:text="${detail.artwork.artist}"></td>
+                                                <td th:text="${'$' + #numbers.formatDecimal(detail.unitPrice, 1, 'COMMA', 0, 'POINT')}"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p class="text-white-50">
+                                        Subtotal: $<span th:text="${#numbers.formatDecimal(sale.subtotal, 1, 'COMMA', 0, 'POINT')}"></span> |
+                                        Descuento: $<span th:text="${#numbers.formatDecimal(sale.discount, 1, 'COMMA', 0, 'POINT')}"></span> |
+                                        <strong>Total: $<span th:text="${#numbers.formatDecimal(sale.total, 1, 'COMMA', 0, 'POINT')}"></span></strong>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="signup-section" id="panel-admin" style="display:none">
+        <!-- Ingresar una obra-->
+                
+                    <div class="container px-4 px-lg-5">
+                        <div class="row gx-4 gx-lg-5">
+                            <div class="col-md-10 col-lg-8 mx-auto text-center">
+
+                                <!-- Mensaje de éxito -->
+                                <div th:if="${message == 'saved' or message == 'deleted' or message == 'updated'}" 
+                                    class="alert alert-success mt-3"
+                                    th:text="${message == 'saved' ? 'Obra guardada correctamente' : 
+                                            message == 'deleted' ? 'Obra eliminada correctamente' : 
+                                            'Obra actualizada correctamente'}">
+                                </div>
+
+                                <!-- Mensaje de error — texto dinámico del throw -->
+                       
+                                <div th:if="${message != null and message != 'saved' and message != 'deleted' and message != 'updated' and !#strings.startsWith(message, 'venta-')}" 
+                                    class="alert alert-danger mt-3" 
+                                    th:text="${message}">
+                                </div>
+
+                    
+                                <i class="fa-solid fa-palette fa-2x mb-2 text-white"></i>
+                                <h2 class="text-white mb-5">Ingresar nueva obra</h2>
+                                <!-- * * * * * * * * * * * * * * *-->
+                                <!-- * * SB Forms Contact Form * *-->
+                                <!-- * * * * * * * * * * * * * * *-->
+                                <!-- This form is pre-integrated with SB Forms.-->
+                                <!-- To make this form functional, sign up at-->
+                                <!-- https://startbootstrap.com/solution/contact-forms-->
+                                <!-- to get an API token!-->
+
+                                <form th:action="@{/guardar}" method="POST" enctype="multipart/form-data">
+                                    <div class="form-floating mb-3" style="max-width: 500px; margin: 0 auto;">
+                                        <input class="form-control" type="text" name="name" id="floatingName" required placeholder="Ingrese el nombre de la obra">
+                                        <label for="floatingName">Nombre de la obra</label>
+                                    </div>
+                                    <div class="form-floating mb-3" style="max-width: 500px; margin: 0 auto;">
+                                        <input class="form-control" type="text" name="artist" id="floatingArtist" required placeholder="Ingrese el nombre del artista">
+                                        <label for="floatingArtist">Nombre del artista</label>
+                                    </div>
+                                    <div class="form-floating mb-3" style="max-width: 500px; margin: 0 auto;">
+                                        <select class="form-select"  name="type" required id="floatingType">
+                                            <option value="">-- Selecciona el tipo --</option>
+                                            <option value="Pintura">Pintura</option>
+                                            <option value="Escultura">Escultura</option>
+                                            <option value="Fresco">Fresco</option>
+                                            <option value="Grabado">Grabado</option>
+                                        </select>
+                                        <label for="floatingType">Tipo de obra</label>
+                                    </div>
+                                    <div class="form-floating mb-3" style="max-width: 500px; margin: 0 auto;">
+                                        <input class="form-control"  type="number" step="0.01" name="price" required placeholder="Ingrese el precio de la obra" id="floatingPrice">
+                                        <label for="floatingPrice">Precio de la obra</label>
+                                    </div>
+                                    <div class="mb-3" style="max-width: 500px; margin: 0 auto;">
+                                        <label for="formImage" class="form-label text-white mb-1">Imagen de la obra</label>
+                                        <input class="form-control" type="file" name="image" id="formImage" accept="image/*" required>
+                                    </div>
+                                    <button class="btn btn-primary" type="submit">Guardar Obra</button>
+                                </form>
+
+
+                                <i class="far fa-trash-alt fa-2x mb-2 text-white mt-5"></i>
+                                <h2 class="text-white mb-3">Eliminar obra</h2>
+
+        <!-- Formulario eliminar -->
+
+
+                                <form th:action="@{/eliminar}" method="POST">
+                                    <div class="form-floating mb-3 mt-3" style="max-width: 500px; margin: 0 auto;">
+                                        <input class="form-control"  type="number" name="id" required placeholder="Ingrese el ID de la obra a eliminar" id="floatingId">
+                                        <label for="floatingId">ID de la obra a eliminar</label>
+                                    </div>
+                                    <button class="btn btn-danger" type="submit">Eliminar Obra</button>
+                                </form>
+                                
+        <!-- Formulario actualizar -->
+
+                                <i class="fa-solid fa-pen-to-square fa-2x mb-2 text-white mt-5"></i>
+                                <h2 class="text-white mb-3">Actualizar obra</h2>
+
+
+                                <form th:action="@{/actualizar}" method="POST" enctype="multipart/form-data">
+                                    <div class="form-floating mb-3 mt-3" style="max-width: 500px; margin: 0 auto;">
+                                        <input class="form-control"  type="number" name="id" required placeholder="Ingrese el ID de la obra a actualizar" id="floatingUpdateId">
+                                        <label for="floatingUpdateId">ID de la obra a actualizar</label>
+                                    </div>
+                                    <div class="form-floating mb-3" style="max-width: 500px; margin: 0 auto;" >
+                                        <input class="form-control" type="text" name="name" required placeholder="Ingrese el nombre de la obra" id="floatingUpdateName">
+                                        <label for="floatingUpdateName">Nombre de la obra</label>
+                                    </div>
+                                    <div class="form-floating mb-3" style="max-width: 500px; margin: 0 auto;">
+                                        <input class="form-control" type="text" name="artist" required id="floatingUpdateArtist" placeholder="Ingrese el nombre del artista">
+                                        <label for="floatingUpdateArtist">Nombre del artista</label>
+                                    </div>
+                                    <div class="form-floating mb-3" style="max-width: 500px; margin: 0 auto;">
+                                        <select class="form-select" name="type" required id="floatingUpdateType">
+                                            <option value="">-- Selecciona el tipo --</option>
+                                            <option value="Pintura">Pintura</option>
+                                            <option value="Escultura">Escultura</option>
+                                            <option value="Fresco">Fresco</option>
+                                            <option value="Grabado">Grabado</option>
+                                        </select>
+                                        <label for="floatingUpdateType">Tipo de obra</label>
+                                    </div>
+                                    <div class="form-floating mb-3" style="max-width: 500px; margin: 0 auto;" >
+                                        <input class="form-control" type="number" step="0.01" name="price" required id="floatingUpdatePrice" placeholder="Ingrese el precio de la obra">
+                                        <label for="floatingUpdatePrice">Precio de la obra</label>
+                                    </div>
+                                    <div class="mb-3" style="max-width: 500px; margin: 0 auto;">
+                                        <label for="formUpdateImage" class="form-label text-white mb-1">Imagen de la obra</label>
+                                        <input class="form-control" type="file" name="image" id="formUpdateImage" accept="image/*" >
+
+                                    </div>
+                                    <button class="btn btn-primary" type="submit">Actualizar Obra</button>
+                                </form>
+    <!-- Formulario ventas -->
+                                <i class="fas fa-history fa-2x mb-2 text-white mt-5"></i>
+                                <h2 class="text-white mb-3">Historial de ventas</h2>
+                                <div class="table-responsive">
+                                    <table class="table table-dark table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Comprador</th>
+                                                <th>Correo</th>
+                                                <th>Fecha</th>
+                                                <th>Subtotal</th>
+                                                <th>Descuento</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="sale : ${sales}">
+                                                <td th:text="${sale.id}"></td>
+                                                <td th:text="${sale.buyer}"></td>
+                                                <td th:text="${sale.mail}"></td>
+                                                <td th:text="${sale.date}"></td>
+                                                <td th:text="${'$' + #numbers.formatDecimal(sale.subtotal, 1, 'COMMA', 0, 'POINT')}"></td>
+                                                <td th:text="${'$' + #numbers.formatDecimal(sale.discount, 1, 'COMMA', 0, 'POINT')}"></td>
+                                                <td th:text="${'$' + #numbers.formatDecimal(sale.total, 1, 'COMMA', 0, 'POINT')}"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p th:if="${#lists.isEmpty(sales)}" class="text-white">No hay ventas registradas aún.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </section>
+        <!-- Contact-->
+        <section class="contact-section bg-black">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5">
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card py-4 h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-map-marked-alt text-primary mb-2"></i>
+                                <h4 class="text-uppercase m-0">Dirección</h4>
+                                <hr class="my-4 mx-auto" />
+                                <div class="small text-black-50">No disponible</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card py-4 h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-envelope text-primary mb-2"></i>
+                                <h4 class="text-uppercase m-0">Correo</h4>
+                                <hr class="my-4 mx-auto" />
+                                <div class="small text-black-50"><a href="#!">No disponible</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card py-4 h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-mobile-alt text-primary mb-2"></i>
+                                <h4 class="text-uppercase m-0">Teléfono</h4>
+                                <hr class="my-4 mx-auto" />
+                                <div class="small text-black-50">No disponible</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="social d-flex justify-content-center">
+                    <a class="mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                    <a class="mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                    <a class="mx-2" href="#!"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </section>
+<!--Calendario-->
+        <section class="py-5 bg-black">
+            <div class="container">
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button id="prevMonth">&lt;</button>
+                        <h2 id="monthDisplay"></h2>
+                        <button id="nextMonth">&gt;</button>
+                    </div>
+                    <div class="calendar-weekdays">
+                        <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
+                    </div>
+                    <div id="calendarDays" class="calendar-days"></div>
+                </div>
+            </div>
+        </section>
+        <!-- Footer-->
+        <footer class="footer bg-black small text-center text-white-50"><div class="container px-4 px-lg-5">Copyright &copy; Your Website 2023</div></footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script th:src="@{/js/scripts.js}"></script>
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- * *                               SB Forms JS                               * *-->
+        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    </body>
+</html>
