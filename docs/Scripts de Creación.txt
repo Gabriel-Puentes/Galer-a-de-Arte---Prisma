@@ -1,0 +1,41 @@
+-- SCRIPT DE OBRA --
+
+CREATE TABLE `artwork` (
+    `id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
+    `name` varchar(50) DEFAULT NULL,
+    `artist` varchar(50) DEFAULT NULL,
+    `price` double DEFAULT NULL,
+    `sold` tinyint(1) DEFAULT '0',
+    `type` varchar(50) DEFAULT NULL,
+    `image` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci
+
+
+-- SCRIPT DE VENTA --
+
+CREATE TABLE `sale` (
+    `id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
+    `buyer` varchar(255) DEFAULT NULL,
+    `mail` varchar(200) DEFAULT NULL,
+    `date` date DEFAULT NULL,
+    `subtotal` double DEFAULT NULL,
+    `discount` double DEFAULT NULL,
+    `total` double DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 4 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci
+
+
+-- SCRIPT DE DETALLES DE VENTA --
+
+CREATE TABLE `sale_detail` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `sale_id` int DEFAULT NULL,
+    `artwork_id` int DEFAULT NULL,
+    `unit_price` double DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `sale_id` (`sale_id`),
+    KEY `artwork_id` (`artwork_id`),
+    CONSTRAINT `sale_detail_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sale` (`id`),
+    CONSTRAINT `sale_detail_ibfk_2` FOREIGN KEY (`artwork_id`) REFERENCES `artwork` (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 6 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci
